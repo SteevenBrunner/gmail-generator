@@ -17,6 +17,9 @@ import string
 # 1 : Normal message
 # 2 : Information message
 # 3 : Caution message
+from pyscreeze import center
+
+
 def msg(
         _option_,
         _message_
@@ -40,11 +43,11 @@ def ext():
 def open_firefox():
 
     # Printing basic message
-    msg(1,'Opening Firefox...')
+    msg(1,'Opening Chrome...')
 
     # Location the start button
-    _start_button_=pyautogui.locateOnScreen('images/start_button.png')
-    _location_=pyautogui.center(_start_button_)
+    _start_button_ = pyautogui.locateOnScreen('images/start_button.png')
+    _location_ = pyautogui.center(_start_button_)
 
     # Clicking the start button
     if not  pyautogui.click(_location_):
@@ -56,7 +59,7 @@ def open_firefox():
     time.sleep(2)
 
     # Search for Firefox in the menu search
-    pyautogui.typewrite('firefox')
+    pyautogui.typewrite('chrome')
     pyautogui.typewrite('\n')
     
     # Print message
@@ -67,37 +70,42 @@ def open_firefox():
 def locate_gmail():
     
     #Sleep for a while and wait for Firefox to open
-    time.sleep(3)
+    time.sleep(1)
+
+    # Printing message
+    msg(1,'Opening Private navigation...')
+
+    _start_button_ = pyautogui.locateOnScreen('images/private_navigation.png')
+    _location_ = pyautogui.center(_start_button_)
+    # Clicking the start button
+    if not pyautogui.click(_location_):
+        msg(1, 'Opened start menu successfully!')
+    else:
+        msg(3, 'Failed to open start menu!')
+        ext()
+
+    _start_button_ = pyautogui.locateOnScreen('images/private_navigation_button.png')
+    _location_ = pyautogui.center(_start_button_)
+    # Clicking the start button
+    if not pyautogui.click(_location_):
+        msg(1, 'Opened start menu successfully!')
+    else:
+        msg(3, 'Failed to open start menu!')
+        ext()
 
     # Printing message
     msg(1,'Opening Gmail...')
 
     # Typing the website on the browser
     pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('a'); pyautogui.keyUp('ctrlleft')
-    pyautogui.typewrite('https://accounts.google.com/SignUp?service=mail&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ltmpl=default')
+    pyautogui.typewrite('accounts.google.com/SignUp')
     pyautogui.typewrite('\n')
-    
+
     # Wait for a while until the website responds
-    time.sleep(6)
+    time.sleep(1)
 
     # Print a simple message
     msg(1,'Locating the form...')
-
-    # Locate the form
-    pyautogui.press('tab')
- 
-    time.sleep(2)
-
-    _gmail_ = pyautogui.locateOnScreen('images/gmail_form.png')
-    formx, formy = pyautogui.center(_gmail_)
-    pyautogui.click(formx, formy)
-    
-    # Check and print message
-    if not pyautogui.click(formx, formy):
-        msg(1,'Located the form.')
-    else:
-        msg(3,'Failed to locate the form.')
-        ext()
 
 
 # Function used to randomize credentials
@@ -144,28 +152,52 @@ def randomize(
 # Function used to generate the credential information
 def generate_info():
 
+    time.sleep(1)
+
     # Print message
     msg(1,'Generating credentials...')
 
     # First and last name
     _first_name_=randomize('-l',7)
     pyautogui.typewrite(_first_name_)
-    pyautogui.typewrite('\t')
+    pyautogui.press('tab')
     _last_name_=randomize('-l',8)
     pyautogui.typewrite(_last_name_)
-    pyautogui.typewrite('\t')
+    pyautogui.press('tab')
     msg(2,'\x1b[0;33;40mName:\x1b[0m %s %s' % (_first_name_,_last_name_))
 
+    time.sleep(1)
     # Username
     _username_=randomize('-l',10)
     pyautogui.typewrite(_username_)
-    pyautogui.typewrite('\t')
+    pyautogui.press('tab')
+    pyautogui.press('tab')
     msg(2,'\x1b[0;33;40mUsername:\x1b[0m %s' % _username_)
 
+    # time.sleep(1)
     # Password
-    _password_=randomize('-p',16)
-    pyautogui.typewrite(_password_+'\t'+_password_+'\t')
+    _password_= 'Azerty123=:'
+    pyautogui.typewrite(_password_)
     msg(2,'\x1b[0;33;40mPassword:\x1b[0m %s' % _password_)
+
+    # time.sleep(1)
+    # Password confirmation
+    pyautogui.press('tab')
+    pyautogui.typewrite(_password_)
+
+    # Location bouton suivant
+    _bouton_suivant_ = pyautogui.locateOnScreen('images/bouton_suivant.png')
+    _location_ = pyautogui.center(_bouton_suivant_)
+
+    # Clicking the start button
+    if not  pyautogui.click(_location_):
+        msg(1,'Opened start menu successfully!')
+    else:
+        msg(3,'Failed to open start menu!')
+        ext()
+
+    return
+
 
     # Date of birth
     _month_=randomize('-m',1)
@@ -181,6 +213,7 @@ def generate_info():
     # Skip the rest
     pyautogui.typewrite('\t\t\t\t\n')
 
+"""
 # Main function
 if __name__=='__main__':
 
@@ -198,3 +231,4 @@ if __name__=='__main__':
 
     msg(1,'Done...')
     ext()
+"""
