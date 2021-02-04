@@ -137,7 +137,7 @@ def randomize(_option_, _length_):
 
 
 # Function used to generate the credential information
-def generate_info():
+def generate_info(email_line):
     time.sleep(3)
 
     _start_button_ = pyautogui.locateOnScreen('images/choose_username_proton.png')
@@ -152,14 +152,15 @@ def generate_info():
     # Print message
     msg(1, 'Generating credentials...')
 
+
+
     # Username
-    _username_ = randomize('-l', 10)
+    _username_ = email_lines[email_counter]
     pyautogui.typewrite(_username_)
     pyautogui.press('tab')
     pyautogui.press('tab')
     msg(2, '\x1b[0;33;40mUsername:\x1b[0m %s' % _username_)
 
-    time.sleep(1)
     # Password
     _password_ = 'Azerty123=:'
     pyautogui.typewrite(_password_)
@@ -167,7 +168,6 @@ def generate_info():
     pyautogui.press('tab')
     msg(2, '\x1b[0;33;40mPassword:\x1b[0m %s' % _password_)
 
-    time.sleep(1)
     # Password confirmation
     pyautogui.typewrite(_password_)
     pyautogui.press('tab')
@@ -178,19 +178,16 @@ def generate_info():
     # go next step
     time.sleep(1)
     pyautogui.press('enter')
-    # go next step
     time.sleep(1)
     pyautogui.press('enter')
-    # validate captcha
-    time.sleep(
-        2)  # _start_button_ = pyautogui.locateOnScreen('images/captcha.png')  # center =  #
-    # pyautogui.locateCenterOnScreen(_start_button_, grayscale=False)  # _location_ = pyautogui.center(  #  #
-    # _start_button_)  # Clicking the start button  # if not pyautogui.click(center):  #    msg(1, 'Opened start menu
-    # successfully!')  # else:  #    msg(3, 'Failed to open start menu!')  #    ext()
 
 
 # Main function
 if __name__ == '__main__':
+
+    # open email names file
+    f = open('email_names.txt', 'r')
+    email_lines = f.read().splitlines()
 
     if open_firefox():
         msg(3, 'Failed to execute "open_firefox" command.')
@@ -200,7 +197,10 @@ if __name__ == '__main__':
         msg(3, 'Failed to execute "locate_gmail" command.')
         ext()
 
-    if generate_info():
+    # to increment email files
+    email_counter = 0
+
+    if generate_info(email_lines[email_counter]):
         msg(3, 'Failed to execute "generate_info" command.')
         ext()
 
