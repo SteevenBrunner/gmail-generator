@@ -1,29 +1,19 @@
 # ! python3
 
-#   Author      : Stavros Grigoriou
-#   Updated    : yungK1LL
-#   GitHub      : https://github.com/unix121
-#   GitHub      : https://github.com/blooditrix
-#   Year        : 2018
-#   Description : [Updated]Script that generates random Gmail account. Still stalls at phone verification.
-
 import pyautogui
 import sys
 import time
 import random
 import string
 
+
 # Printing funtion with 3 modes
 # 1 : Normal message
 # 2 : Information message
 # 3 : Caution message
-from pyscreeze import center
 
 
-def msg(
-        _option_,
-        _message_
-):
+def msg(_option_, _message_):
     if _option_ == 1:
         print('\x1b[0;32;40m> %s\x1b[0m' % _message_)
     elif _option_ == 2:
@@ -110,10 +100,7 @@ def locate_gmail():
 
 
 # Function used to randomize credentials
-def randomize(
-        _option_,
-        _length_
-):
+def randomize(_option_, _length_):
     if _length_ > 0:
 
         # Options:
@@ -151,7 +138,6 @@ def randomize(
 
 # Function used to generate the credential information
 def generate_info():
-
     time.sleep(3)
 
     _start_button_ = pyautogui.locateOnScreen('images/choose_username_proton.png')
@@ -189,10 +175,18 @@ def generate_info():
     pyautogui.press('tab')
     pyautogui.press('tab')
 
+    # go next step
     time.sleep(1)
     pyautogui.press('enter')
+    # go next step
     time.sleep(1)
     pyautogui.press('enter')
+    # validate captcha
+    time.sleep(
+        2)  # _start_button_ = pyautogui.locateOnScreen('images/captcha.png')  # center =  #
+    # pyautogui.locateCenterOnScreen(_start_button_, grayscale=False)  # _location_ = pyautogui.center(  #  #
+    # _start_button_)  # Clicking the start button  # if not pyautogui.click(center):  #    msg(1, 'Opened start menu
+    # successfully!')  # else:  #    msg(3, 'Failed to open start menu!')  #    ext()
 
 
 # Main function
