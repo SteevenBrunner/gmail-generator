@@ -3,22 +3,16 @@
 import pyautogui
 import sys
 import time
-import random
-import string
 
 import requests
 from proxyscrape import create_collector, get_collector
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 
-### Chrome needs to be open before starting the program ###
 
-
-# Printing funtion with 3 modes
-# 1 : Normal message
-# 2 : Information message
-# 3 : Caution message
+####################################################
+#           WRITTEN BY STEEVEN BRUNNER             #
+####################################################
 
 
 def proxy_connection():
@@ -62,12 +56,16 @@ def proxy_connection():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('detach', True)
     driver = webdriver.Chrome(executable_path='chromedriver', options=options)
+    driver.maximize_window()
 
+    return driver
+
+
+def launch_protonmail(_driver):
     url = 'https://mail.protonmail.com/create/new?language=en'
 
-    driver.get(url)
-    driver.maximize_window()
-    driver.implicitly_wait(3)
+    _driver.get(url)
+    _driver.implicitly_wait(3)
 
 
 def msg(_option_, _message_):
@@ -88,7 +86,7 @@ def ext():
 
 
 # Function used to generate the credential information
-def generate_info(username):
+def generate_info_protonmail(username):
     click_to_username()
 
     # Print message
@@ -127,7 +125,7 @@ def click_to_username():
     time.sleep(2)
     _username_box_ = pyautogui.locateOnScreen('images/choose_username_proton.png')
     _location_ = pyautogui.center(_username_box_)
-    # Clicking the start button
+    # Clicking the username box
     if not pyautogui.click(_location_):
         msg(1, 'Clicked to username box successfully !')
     else:
@@ -146,6 +144,22 @@ def close_chrome():
         ext()
 
 
+def complete_setup_protonmail():
+    time.sleep(1)
+    _complete_setup = pyautogui.locateOnScreen('images/close_chrome_button.png')
+    try:
+        _location_ = pyautogui.center(_complete_setup)
+    except TypeError:
+        pass
+    # Clicking the complete setup button
+    if not pyautogui.click(_location_):
+        msg(1, 'Email created successfully !')
+        time.sleep(6)
+        return True
+    else:
+        return False
+
+
 # Main function
 if __name__ == '__main__':
 
@@ -156,22 +170,25 @@ if __name__ == '__main__':
     f = open('email_names.txt', 'r')
     email_lines = f.read().splitlines()
 
+    # https://10minutemail.net/?lang=fr
 
     for i in range(1, 30):
+        _driver = proxy_connection()
+
         for j in range(1, 3):
             # connect to proxy, open ChromeDriver, launches ProtonMail signup page
-            proxy_connection()
+            launch_protonmail(_driver)
 
             while email_counter < len(email_lines):
-                if generate_info(email_lines[email_counter]):
+
+                if generate_info_protonmail(email_lines[email_counter]):
                     msg(3, 'Failed to execute "generate_info" command.')
                     ext()
-
-                # close_chrome()
-
-                exit()
+                while complete_setup_protonmail() is False:
+                    pass
                 email_counter += 1
 
+        close_chrome()
 
 
     msg(1, 'Done...')
